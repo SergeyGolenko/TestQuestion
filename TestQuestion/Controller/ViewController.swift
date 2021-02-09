@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class ViewController: UIViewController {
 
@@ -19,20 +20,18 @@ class ViewController: UIViewController {
     }
     var progressPart : Float = 0
     
-    
-    
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    
     @IBOutlet weak var progressBar: UIProgressView!
-    
     @IBOutlet weak var progressLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
+      //  ProgressHUD.colorHUD = .black
+        ProgressHUD.animationType = .lineScaling
+        ProgressHUD.fontStatus = .boldSystemFont(ofSize: 1000)
     }
-
 
     @IBAction func answerPressed(_ sender: AnyObject) {
         if sender.tag == 1 {
@@ -40,11 +39,9 @@ class ViewController: UIViewController {
         } else if sender.tag == 2 {
             answerBool = false
         }
-        
         checkAnswer()
         updateUI()
     }
-    
     
     func updateUI() {
         if counter <= 12 {
@@ -63,22 +60,20 @@ class ViewController: UIViewController {
         }
     }
     
-    
-
     func nextQuestion() {
         questionLabel.text = list[counter].questionText
         progressLabel.text = "\(counter + 1)/13"
         scoreLabel.text = "Score: \(score)"
         progressBar.setProgress(progressPart, animated: true)
-       
-        
-        
-            
         }
     
     func checkAnswer() {
         if answerBool == list[counter - 1].answer {
             score += 100
+            ProgressHUD.showSuccess()
+            
+        } else {
+            ProgressHUD.showFailed()
         }
     }
     
