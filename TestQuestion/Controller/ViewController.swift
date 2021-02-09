@@ -14,11 +14,18 @@ class ViewController: UIViewController {
     var counter = 0
     var score = 0
     var answerBool = false
+    var progressPart2 : Float {
+        return 1 / Float(self.list.count)
+    }
+    var progressPart : Float = 0
+    
     
     
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet var progressBar: UIView!
+    
+    @IBOutlet weak var progressBar: UIProgressView!
+    
     @IBOutlet weak var progressLabel: UILabel!
     
     override func viewDidLoad() {
@@ -43,6 +50,8 @@ class ViewController: UIViewController {
         if counter <= 12 {
            nextQuestion()
             counter += 1
+            progressPart += progressPart2
+            print(progressPart)
         } else {
             let alert = UIAlertController(title: "Awesome", message: "You've finished all the questions, do you want to start over?", preferredStyle: .alert)
             let restartAction = UIAlertAction(title: "Restart", style: .default, handler: { UIAlertAction in
@@ -60,6 +69,10 @@ class ViewController: UIViewController {
         questionLabel.text = list[counter].questionText
         progressLabel.text = "\(counter + 1)/13"
         scoreLabel.text = "Score: \(score)"
+        progressBar.setProgress(progressPart, animated: true)
+       
+        
+        
             
         }
     
@@ -73,6 +86,7 @@ class ViewController: UIViewController {
     func startOver() {
        counter = 0
         score = 0
+        progressPart = 0
        updateUI()
     }
     
